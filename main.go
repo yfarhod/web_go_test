@@ -10,14 +10,23 @@ type User struct {
   avg_grades, happiness float64
 }
 
-func home_page(page http.ResponseWriter, r *http.Request) {
-  user1 := User{"Bob", 25, -10, 4.2, 0.8}
-  user1.name = "Alex"
-  fmt.Fprintf(page, "User name is: " + user1.name)
+func (u User) getAllInfo() string {
+  return fmt.Sprintf("User name is %s. He is %d years old and he has %d money.",
+  u.name, u.age, u.money)
 }
 
-func contacts_page(page http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(page, "Contacts page!")
+func (u *User) setNewName(newName string) {
+  u.name = newName
+}
+
+func home_page(w http.ResponseWriter, r *http.Request) {
+  user1 := User{"Bob", 25, -10, 4.2, 0.8}
+  user1.setNewName("Alex")
+  fmt.Fprintf(w, user1.getAllInfo())
+}
+
+func contacts_page(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "Contacts page!")
 }
 
 func handleRequest() {
